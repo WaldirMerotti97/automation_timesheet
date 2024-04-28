@@ -51,7 +51,7 @@ def fazerLogin():
 
     senha = browser.find_element(By.ID, "Password")
 
-    senha.send_keys("#Ebxjcq10")
+    senha.send_keys("123*Autuori!")
 
     login = browser.find_element(By.XPATH, value="/html/body/div/div/form/table/tbody/tr[5]/td/button")
 
@@ -230,16 +230,20 @@ def cronograma_dia():
                 linha_atual = linha_atual + 1
                 prazo_atual_do_dia = prazo_atual_do_dia + 1
 
-                browser = fazerLogin()
-                preencherTimeSheet(browser=browser,
-                                   _data_inicio=dado_cliente.data_hora_prazo,
-                                   _data_fim=dado_cliente.data_hora_prazo,
-                                   _hora_inicio=formatar_horario(dado_cliente.data_inicio),
-                                   _hora_fim=formatar_horario(ultimo_horario - timedelta(hours=0, minutes=1,
-                                                                                         seconds=0)),
-                                   _descricao_abertura=f'{dado_cliente.subtipo_prazo} {dado_cliente.adverso} {dado_cliente.processo_judicial}',
-                                   _descricao_conclusao=f'{dado_cliente.subtipo_prazo} {dado_cliente.adverso} {dado_cliente.processo_judicial}'
-                                   )
+                try:
+                    browser = fazerLogin()
+                    preencherTimeSheet(browser=browser,
+                                       _data_inicio=dado_cliente.data_hora_prazo,
+                                       _data_fim=dado_cliente.data_hora_prazo,
+                                       _hora_inicio=formatar_horario(dado_cliente.data_inicio),
+                                       _hora_fim=formatar_horario(ultimo_horario - timedelta(hours=0, minutes=1,
+                                                                                             seconds=0)),
+                                       _descricao_abertura=f'{dado_cliente.subtipo_prazo} {dado_cliente.adverso} {dado_cliente.processo_judicial}',
+                                       _descricao_conclusao=f'{dado_cliente.subtipo_prazo} {dado_cliente.adverso} {dado_cliente.processo_judicial}'
+                                       )
+                except Exception as error:
+                    print(f'Erro ao processar dados do cliente: {dado_cliente}')
+                    continue
 
                 total_enviados = total_enviados + 1
                 print(
